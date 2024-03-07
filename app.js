@@ -6,10 +6,10 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(expressLayouts);
-app.use("view engine","ejs");
-app.use("views","./views");
+app.set("view engine","ejs");
+app.set("views","./views");
 
-
+app.une
 app.use("/",require("./routes/main"));
 
 app.listen(port,()=>{
