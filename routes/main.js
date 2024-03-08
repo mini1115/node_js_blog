@@ -20,4 +20,11 @@ router.get("/about", (req, res) => {
     };
     res.render("about", { locals, layout: mainLayout });
 });
+// 게시글 상세보기
+router.get("/post/:id", asyncHanlder(async (req, res) => {
+    const data = await Post.findOne({ _id: req.params.id });
+    res.render("post", { data, layout: mainLayout });
+})
+);
+
 module.exports = router;

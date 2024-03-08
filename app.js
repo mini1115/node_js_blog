@@ -11,8 +11,9 @@ connectDB();
 app.use(expressLayouts);
 app.set("view engine", "ejs");
 app.set("views", "./views");
-
+//정적 파일 사용하기(css)
 app.use(express.static("public"));
+
 app.use("/",require("./routes/main"));
 
 app.listen(port,()=>{
