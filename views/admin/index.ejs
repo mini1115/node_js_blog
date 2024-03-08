@@ -1,0 +1,25 @@
+<!-- 관리자 로그인 페이지 -->
+<h3>로그인</h3>
+<form action="/admin" method="POST">
+    <div class="form-group">
+      <label for="username">Email address:</label>
+      <input type="email" class="form-control" placeholder="Enter email" id="username">
+    </div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" class="form-control" placeholder="Enter password" id="pwd">
+    </div>
+    <button type="submit" value="로그인">Submit</button>
+  </form>
+
+<h3>관리자 등록</h3>
+  <form action="/register" method="POST">
+    <label for="username"><b>사용자 이름</b></label>
+    <input type="text" name="username" id="username">
+  
+    <label for="password"><b>비밀번호</b></label>
+    <input type="password" name="password" id="password">
+  
+    <input type="submit" value="등록" class="btn">
+  
+  </form>

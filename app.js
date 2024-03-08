@@ -13,8 +13,11 @@ app.set("view engine", "ejs");
 app.set("views", "./views");
 //정적 파일 사용하기(css)
 app.use(express.static("public"));
+//url parser
+app.use(express.urlencoded({extended:true}));
 
 app.use("/",require("./routes/main"));
+app.use("/",require("./routes/admin"));
 
 app.listen(port,()=>{
     console.log(`app exec on port ${port}`);
