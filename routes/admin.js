@@ -5,6 +5,7 @@ const asyncHanlder = require("express-async-handler");
 const adminLayout = "../views/layouts/admin";
 const adminLayout2 = "../views/layouts/admin-nologout";
 const User = require("../models/User");
+const Post = require("../models/Post");
 const bcrpyt = require("bcrypt");
 //웹토큰 비밀키
 const jwt = require("jsonwebtoken");
@@ -36,6 +37,15 @@ router.post("/admin", asyncHanlder(async (req, res) => {
     const token = jwt.sign({ id: user._id }, jwtSecret);
     res.cookie("token", token, { httpOnly: true });
     res.redirect("/allPosts");
+})
+);
+//전체 게시물 표시하기
+router.get("/allPosts",asyncHanlder(async(req,res)=>{
+    const locals = {
+        title : "POSTS"
+    };
+    const data = await Post.find();
+    res.render("admin/allPosts",{locals,data,layout:adminLayout});
 })
 );
 // //관리자 등록 get `방식 처리
