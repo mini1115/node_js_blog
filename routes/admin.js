@@ -14,22 +14,22 @@ router.get("/admin", (req, res) => {
     res.render("admin/index", { locals, layout: adminLayout2 });
 });
 
-//관리자 등록 get 방식 처리
-router.get("/register",asyncHanlder(async(req,res)=>{
-    res.render("admin/index", {layout: adminLayout2 });
-})
-);
+//관리자 등록 get `방식 처리
+// router.get("/register",asyncHanlder(async(req,res)=>{
+//     res.render("admin/index", {layout: adminLayout2 });
+// })
+// );
 //관리자 등록 post 방식 처리
 
-router.post("/register",asyncHanlder(async(req,res)=>{
-    //res.send("register success");
-    //비밀번호 암호화
-    const hashedPassword = await bcrpyt.hash(req.body.password,10);
-    const user = await User.create({
-        username : req.body.username,
-        password : hashedPassword,
-    });
-    res.json(`${user} created !`)
-})
-);
+// router.post("/register",asyncHanlder(async(req,res)=>{
+//     //res.send("register success");
+//     //비밀번호 암호화
+//     const hashedPassword = await bcrpyt.hash(req.body.password,10);
+//     const user = await User.create({
+//         username : req.body.username,
+//         password : hashedPassword,
+//     });
+//     res.json(`${user} created !`)
+// })
+// );
 module.exports = router;
