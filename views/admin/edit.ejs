@@ -1,7 +1,7 @@
 <a href="/allPosts">&larr; 뒤로</a>
 <div class="admin-title">
   <h2><%= locals.title %></h2>
-  <form>
+  <form action="/delete/<%=data._id %>?_method=delete" method="post">
     <input type="submit" value="삭제" class="btn-delete btn">
   </form>
 </div>

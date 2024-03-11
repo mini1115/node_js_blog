@@ -107,6 +107,11 @@ router.put("/edit/:id", checkLogin, asyncHanlder(async (req, res) => {
     });
     res.redirect("/allPosts");
 }));
+router.delete("/delete/:id",checkLogin,asyncHanlder(async(req,res)=>{
+    await Post.deleteOne({_id :req.params.id});
+    res.redirect("/allPosts");
+})
+);
 // //관리자 등록 get `방식 처리
 // router.get("/register", asyncHanlder(async (req, res) => {
 //     res.render("admin/index", { layout: adminLayout2 });
