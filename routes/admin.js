@@ -13,16 +13,16 @@ const jwtSecret = process.env.JWT_SECRET;
 
 
 //권한 확인 미들웨어
-const checkLogin = (req,res,next) => {
+const checkLogin = (req, res, next) => {
     const token = req.cookies.token;
-    if(!token){
+    if (!token) {
         res.redirect("/admin");
-    }else{
-        try{
-            const decoded = jwt.verify(token,jwtSecret);
+    } else {
+        try {
+            const decoded = jwt.verify(token, jwtSecret);
             req.userId = decoded.userId;
             next();
-        }catch(error){
+        } catch (error) {
             res.redirect("/admin");
         }
     }
@@ -58,39 +58,55 @@ router.post("/admin", asyncHanlder(async (req, res) => {
 })
 );
 //전체 게시물 표시하기
-router.get("/allPosts",checkLogin,asyncHanlder(async(req,res)=>{
+router.get("/allPosts", checkLogin, asyncHanlder(async (req, res) => {
     const locals = {
-        title : "POSTS"
+        title: "POSTS"
     };
     const data = await Post.find();
-    res.render("admin/allPosts",{locals,data,layout:adminLayout});
+    res.render("admin/allPosts", { locals, data, layout: adminLayout });
 })
 );
 //로그아웃 처리
-router.get("/logout",(req,res)=>{
+router.get("/logout", (req, res) => {
     res.clearCookie("token");
     res.redirect("/");
 });
 
 //새 게시글 작성
-router.get("/add",checkLogin,asyncHanlder(async(req,res)=>{
-    const locals =  {
-        title : "게시글 작성"
+router.get("/add", checkLogin, asyncHanlder(async (req, res) => {
+    const locals = {
+        title: "게시글 작성"
     };
-    res.render("admin/add",{locals,layout:adminLayout});
+    res.render("admin/add", { locals, layout: adminLayout });
 })
 );
-router.post("/add",checkLogin,asyncHanlder(async(req,res)=>{
-    const {title,body} = req.body;
+router.post("/add", checkLogin, asyncHanlder(async (req, res) => {
+    const { title, body } = req.body;
     const newPost = new Post({
-        title : title,
-        body : body
+        title: title,
+        body: body
     });
     await Post.create(newPost);
     res.redirect("/allPosts");
 })
 );
-
+//게시글 편집ejs
+router.get("/edit/:id", checkLogin, asyncHanlder(async (req, res) => {
+    const locals = {
+        title: "게시글 편집"
+    };
+    const data = await Post.findOne({ _id: req.params.id });
+    res.render("admin/edit", { locals, data, layout: adminLayout });
+}))
+//게시글 수정
+router.put("/edit/:id", checkLogin, asyncHanlder(async (req, res) => {
+    await Post.findByIdAndUpdate(req.params.id, {
+        title: req.body.title,
+        body: req.body.body,
+        createdAt: Date.now(),
+    });
+    res.redirect("/allPosts");
+}));
 // //관리자 등록 get `방식 처리
 // router.get("/register", asyncHanlder(async (req, res) => {
 //     res.render("admin/index", { layout: adminLayout2 });
