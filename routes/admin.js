@@ -11,6 +11,24 @@ const bcrpyt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const jwtSecret = process.env.JWT_SECRET;
 
+
+//권한 확인 미들웨어
+const checkLogin = (req,res,next) => {
+    const token = req.cookies.token;
+    if(!token){
+        res.redirect("/admin");
+    }else{
+        try{
+            const decoded = jwt.verify(token,jwtSecret);
+            req.userId = decoded.userId;
+            next();
+        }catch(error){
+            res.redirect("/admin");
+        }
+    }
+
+};
+
 router.get("/admin", (req, res) => {
     const locals = {
         title: '관리자 페이지'
@@ -40,7 +58,7 @@ router.post("/admin", asyncHanlder(async (req, res) => {
 })
 );
 //전체 게시물 표시하기
-router.get("/allPosts",asyncHanlder(async(req,res)=>{
+router.get("/allPosts",checkLogin,asyncHanlder(async(req,res)=>{
     const locals = {
         title : "POSTS"
     };
@@ -55,14 +73,14 @@ router.get("/logout",(req,res)=>{
 });
 
 //새 게시글 작성
-router.get("/add",asyncHanlder(async(req,res)=>{
+router.get("/add",checkLogin,asyncHanlder(async(req,res)=>{
     const locals =  {
         title : "게시글 작성"
     };
     res.render("admin/add",{locals,layout:adminLayout});
 })
 );
-router.post("/add",asyncHanlder(async(req,res)=>{
+router.post("/add",checkLogin,asyncHanlder(async(req,res)=>{
     const {title,body} = req.body;
     const newPost = new Post({
         title : title,
@@ -72,6 +90,7 @@ router.post("/add",asyncHanlder(async(req,res)=>{
     res.redirect("/allPosts");
 })
 );
+
 // //관리자 등록 get `방식 처리
 // router.get("/register", asyncHanlder(async (req, res) => {
 //     res.render("admin/index", { layout: adminLayout2 });
