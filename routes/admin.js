@@ -53,6 +53,25 @@ router.get("/logout",(req,res)=>{
     res.clearCookie("token");
     res.redirect("/");
 });
+
+//새 게시글 작성
+router.get("/add",asyncHanlder(async(req,res)=>{
+    const locals =  {
+        title : "게시글 작성"
+    };
+    res.render("admin/add",{locals,layout:adminLayout});
+})
+);
+router.post("/add",asyncHanlder(async(req,res)=>{
+    const {title,body} = req.body;
+    const newPost = new Post({
+        title : title,
+        body : body
+    });
+    await Post.create(newPost);
+    res.redirect("/allPosts");
+})
+);
 // //관리자 등록 get `방식 처리
 // router.get("/register", asyncHanlder(async (req, res) => {
 //     res.render("admin/index", { layout: adminLayout2 });
