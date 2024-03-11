@@ -48,6 +48,11 @@ router.get("/allPosts",asyncHanlder(async(req,res)=>{
     res.render("admin/allPosts",{locals,data,layout:adminLayout});
 })
 );
+//로그아웃 처리
+router.get("/logout",(req,res)=>{
+    res.clearCookie("token");
+    res.redirect("/");
+});
 // //관리자 등록 get `방식 처리
 // router.get("/register", asyncHanlder(async (req, res) => {
 //     res.render("admin/index", { layout: adminLayout2 });
